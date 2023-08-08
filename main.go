@@ -18,8 +18,6 @@ func main(){
 	// create a scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
 
-	exitCommands := []string{"q", "quit", "exit"}
-
 	// print user instructions
 	fmt.Println("Enter your command. Enter q to quit.")
 
@@ -37,6 +35,7 @@ func main(){
 		input = strings.ToLower(input)
 
 		// exit conditions
+		exitCommands := []string{"q", "quit", "exit"}
 
 		found := false
 		for _ , phrase := range exitCommands {
