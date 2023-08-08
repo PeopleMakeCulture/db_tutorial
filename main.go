@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 /** we need to: 
@@ -14,11 +15,13 @@ import (
 */
 func main(){
 
-	// print user instructions
-	fmt.Println("Enter your command. Enter q to quit.")
-
 	// create a scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
+
+	exitCommands := []string{"q", "quit", "exit"}
+
+	// print user instructions
+	fmt.Println("Enter your command. Enter q to quit.")
 
 	// keep looping until user exits
 	for {
@@ -30,10 +33,19 @@ func main(){
 		scanner.Scan()
 
 		// retrieve the input value
-		var input string = scanner.Text()
+		input := scanner.Text()
+		input = strings.ToLower(input)
 
-		// exit condition
-		if input == "q" {
+		// exit conditions
+
+		found := false
+		for _ , phrase := range exitCommands {
+			if input == phrase {
+				found = true
+				break
+			}
+		}
+		if found {
 			fmt.Println("goodbye!")
 			break 
 		}
