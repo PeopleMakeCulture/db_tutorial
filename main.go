@@ -7,13 +7,38 @@ import (
 	"strings"
 )
 
-/** we need to: 
-* print prompt 
-* get input 
+func do_meta_command(input string) error {
+
+	switch input {
+	case ".exit":
+		fmt.Println("goodbye!")
+		os.Exit(0)
+	default:
+		return fmt.Errorf("unrecognized command: %s", input)
+	}
+	// we did stuff successfully
+	return nil
+}
+
+func execute_command(input string) error {
+	switch input {
+	case "select":
+		fmt.Println("SELECT")
+	case "insert":
+		fmt.Println("INSERT")
+	default:
+		return fmt.Errorf("unrecognized command: %s", input)
+	}
+	return nil
+}
+
+/** we need to:
+* print prompt
+* get input
 * process input
 * repeat
-*/
-func main(){
+ */
+func main() {
 
 	// create a scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
@@ -34,23 +59,24 @@ func main(){
 		input := scanner.Text()
 		input = strings.ToLower(input)
 
-		// exit conditions
-		exitCommands := []string{"q", "quit", "exit"}
+		// if input starts with .
+		if input[0] == '.' {
+			err := do_meta_command(input)
 
-		found := false
-		for _ , phrase := range exitCommands {
-			if input == phrase {
-				found = true
-				break
+			if err != nil {
+				fmt.Println(err)
+				continue
 			}
-		}
-		if found {
-			fmt.Println("goodbye!")
-			break 
+
 		}
 
-		// we will learn to parse commands in part 2!
-		fmt.Println("Unrecognized command: ", input)
+		// do regular command
+		err := execute_command(input)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
 
 	}
 
